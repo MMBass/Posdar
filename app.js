@@ -10,10 +10,10 @@ const findBySelector = require('./services/findbyselectorService.js');
 const app = express();
 const port = process.env.PORT || config.PORT;
 
-// (async function main(){
-//       await findBySelector.scan();
-//       main();
-// })();//Start scanning groups on startup 
+(async function main(){
+      await findBySelector.scan();
+      main();
+})();//Start scanning groups on startup 
 
 app.use(cors());
 app.use(express.json());
