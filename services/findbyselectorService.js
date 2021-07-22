@@ -35,7 +35,12 @@ exports.scan = async function() {
 
 async function getDom(group_id) {
     try{
-      browser = await puppeteer.launch({ headless: true });
+      browser = await puppeteer.launch({ 
+        headless: true,
+        args:[
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+      ]});
       const context = await browser.createIncognitoBrowserContext();
       const page = await context.newPage();
       page.setViewport({width: 800, height: 20000 });
