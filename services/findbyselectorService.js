@@ -6,6 +6,7 @@ const config = require('../config/config');
 let browser;
 
 exports.scan = async function() {
+    console.log("scan")
     let tasks = await tasksModel.readAll(); // recive all the tasks from the model
     if(tasks && tasks.length > 0){
     for(task of tasks){
