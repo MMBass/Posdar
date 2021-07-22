@@ -1,6 +1,6 @@
 const tasksModel = require('../models/tasks');
 
-// TODO here reusablse checkExist function 
+// TODO finish the checkExist 
 
 exports.checkExist = function(model, data){
     // model can be "task", "user"

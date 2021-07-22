@@ -5,11 +5,13 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "build": "cd server && npm i",
+    "start": "cd server node app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.12.0",
     "free-proxy": "^0.2.0",
@@ -17,5 +19,8 @@
     "pdf-parse": "^1.1.1",
     "pdf-to-text": "0.0.7",
     "puppeteer": "^9.1.1"
+  },
+  "engines": {
+    "node": "12.18.4"
   }
 }

@@ -1,7 +1,7 @@
 let path = require('path');
 
 const config = {
-    PORT: 3000,
+    PORT: 5000,
     tasksPath: path.join(__dirname, '../data/tasks.json'),
     divsSelector: `div[data-ad-preview="message"]`, 
     // another selector: // data-ad-comet-preview="message"

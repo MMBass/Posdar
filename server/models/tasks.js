@@ -1,4 +1,3 @@
-const { group } = require('console');
 const fs = require('fs');
 let path = require('path');
 const config = require('../config/config');
