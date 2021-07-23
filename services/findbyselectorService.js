@@ -53,10 +53,11 @@ async function getDom(group_id) {
    
      // await page.screenshot({ path: './data/example.png' });
       let divsText = await page.evaluate(() => {
+          console.log("EVULATE");
         const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
         return results.map((div) => div.textContent);
       });
-         console.log(divsText);
+      console.log("DIVS:  "+divsText);
       page.close();
       return divsText;
     }catch (e){
