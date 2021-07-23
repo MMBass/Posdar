@@ -7,7 +7,8 @@ let browser;
 
 exports.scan = async function() {
     console.log("scan")
-    let tasks = await tasksModel.readAll(); // recive all the tasks from the model
+//     let tasks = await tasksModel.readAll();
+     getDom(group_id)// recive all the tasks from the model
     if(tasks && tasks.length > 0){
     for(task of tasks){
       try{
@@ -45,14 +46,15 @@ async function getDom(group_id) {
       const context = await browser.createIncognitoBrowserContext();
       const page = await context.newPage();
       page.setViewport({width: 800, height: 20000 });
-      await page.goto(config.fbLink(group_id), {waitUntil: 'domcontentloaded'});
-      await page.waitForTimeout( 1000||generateRandSeconds());
+      await page.goto(config.fbLink("277156988971707"), {waitUntil: 'domcontentloaded'});
+      await page.waitForTimeout( 1000 || generateRandSeconds());
    
-      await page.screenshot({ path: './data/example.png' });
+     // await page.screenshot({ path: './data/example.png' });
       let divsText = await page.evaluate(() => {
         const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
         return results.map((div) => div.textContent);
       });
+         console.log(divsText);
       page.close();
       return divsText;
     }catch (e){
