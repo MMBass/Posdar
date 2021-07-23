@@ -9,7 +9,8 @@ exports.scan = async function() {
     console.log("scan")
 //     let tasks = await tasksModel.readAll();
      getDom("277156988971707")// recive all the tasks from the model
-    if(tasks && tasks.length > 0){
+  if(tasks ){
+   if(tasks.length > 0){
     for(task of tasks){
       try{
         let divsText = await getDom(task.group);
@@ -29,6 +30,7 @@ exports.scan = async function() {
       }
      } //for loop separate the calls, forEach calling them together without waiting
     }
+   }
     function timeout(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
