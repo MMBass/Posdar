@@ -35,7 +35,7 @@ exports.scan = async function() {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
     try{
-    await timeout(5000);
+    await timeout(generateRandSeconds());
     }catch{
        console.log("timeout catched");
     }
@@ -58,7 +58,7 @@ async function getDom(group_id) {
      // await page.screenshot({ path: './data/example.png' });
       let divsText = await page.evaluate(() => {
           console.log("EVULATE");
-        const results = Array.from(document.querySelectorAll(`div`));//TODO return selector, and delete consoles
+        const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
         return results.map((div) => div.textContent);
       });
       console.log("DIVS:  "+divsText);
