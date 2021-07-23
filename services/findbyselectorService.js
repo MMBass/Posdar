@@ -9,7 +9,7 @@ exports.scan = async function() {
     console.log("scan")
 //     let tasks = await tasksModel.readAll();
      getDom("277156988971707")// recive all the tasks from the model
-  if(tasks ){
+  if(typeof tasks !== "undefined"){
    if(tasks.length > 0){
     for(task of tasks){
       try{
