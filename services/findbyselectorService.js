@@ -35,7 +35,7 @@ exports.scan = async function() {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
     try{
-    await timeout(3000);
+    await timeout(5000);
     }catch{
        console.log("timeout catched");
     }
@@ -53,7 +53,7 @@ async function getDom(group_id) {
       const page = await context.newPage();
       page.setViewport({width: 800, height: 20000 });
       await page.goto(config.fbLink(group_id), {waitUntil: 'domcontentloaded'});
-      await page.waitForTimeout( 1000 || generateRandSeconds());
+      await page.waitForTimeout( generateRandSeconds());
    
      // await page.screenshot({ path: './data/example.png' });
       let divsText = await page.evaluate(() => {
