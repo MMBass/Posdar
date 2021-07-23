@@ -34,7 +34,11 @@ exports.scan = async function() {
     function timeout(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
+    try{
     await timeout(3000);
+    }catch{
+       console.log("timeout catched");
+    }
 }    
 
 async function getDom(group_id) {
@@ -54,11 +58,12 @@ async function getDom(group_id) {
      // await page.screenshot({ path: './data/example.png' });
       let divsText = await page.evaluate(() => {
           console.log("EVULATE");
-        const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
+        const results = Array.from(document.querySelectorAll(`div`));//TODO return selector, and delete consoles
         return results.map((div) => div.textContent);
       });
       console.log("DIVS:  "+divsText);
-      page.close();
+         console.log("DIV:  "+divsText[0]);
+      await page.close();
       return divsText;
     }catch (e){
       console.log('end with error + '+e);
