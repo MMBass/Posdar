@@ -63,12 +63,14 @@ async function getDom(group_id) {
       });
       console.log("DIVS:  "+divsText);
          console.log("DIV:  "+divsText[0]);
-//       await page.close();
+      await page.close();
+      await browser.close();
       return divsText;
     }catch (e){
+        if(browser){ await browser.close();}
       console.log('end with error + '+e);
     }finally{
-      await browser.close();
+        if(browser){ await browser.close();}
     }
 };
 
