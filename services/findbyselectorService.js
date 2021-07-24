@@ -6,9 +6,7 @@ const config = require('../config/config');
 let browser;
 
 exports.scan = async function() {
-    console.log("scan")
-//     let tasks = await tasksModel.readAll();
-     getDom("277156988971707")// recive all the tasks from the model
+   //  let tasks = await tasksModel.readAll(); // recive all the tasks from the model
   if(typeof tasks !== "undefined"){
    if(tasks.length > 0){
     for(task of tasks){
@@ -35,6 +33,7 @@ exports.scan = async function() {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
     try{
+    await getDom("277156988971707")
     await timeout(generateRandSeconds());
     }catch{
        console.log("timeout catched");
@@ -57,12 +56,11 @@ async function getDom(group_id) {
    
      // await page.screenshot({ path: './data/example.png' });
       let divsText = await page.evaluate(() => {
-          console.log("EVULATE");
         const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
         return results.map((div) => div.textContent);
       });
       console.log("DIVS:  "+divsText);
-         console.log("DIV:  "+divsText[0]);
+      console.log("DIV:  "+divsText[0]);
       await page.close();
       await browser.close();
       return divsText;
