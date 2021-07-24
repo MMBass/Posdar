@@ -11,8 +11,8 @@ const app = express();
 const port = process.env.PORT || config.PORT;
 
 (async function main(){
-      await findBySelector.scan();
-      main();
+//       await findBySelector.scan();
+//       main();
 })();//Start scanning groups on startup 
 
 app.use(cors());
