@@ -73,8 +73,9 @@ async function getDom(group_id) {
 };
 
 function generateRandSeconds(){ 
-  return (Math.floor(Math.random()* 10) + 10) * 1000;
-} // return random seconds between 10 to 20
+//   return (Math.floor(Math.random()* 10) + 10) * 1000;
+     return (Math.floor(Math.random()* 2) + 1) * 10000;
+} // random seconds between 10 to 20
 
 function getNewRelevent(newPosts, taskText, notifiedPosts){
    let relevant = [];
