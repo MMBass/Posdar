@@ -56,7 +56,7 @@ async function getDom(group_id) {
    
      // await page.screenshot({ path: './data/example.png' });
       let divsText = await page.evaluate(() => {
-        const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
+        const results = Array.from(document.querySelectorAll(`body`));
         return results.map((div) => div.textContent);
       });
       console.log("DIVS:  "+divsText);
