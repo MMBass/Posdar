@@ -33,7 +33,7 @@ exports.scan = async function() {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
     try{
-    await getDom("277156988971707")
+    await getDom("secretjerusalem")
     await timeout(generateRandSeconds());
     }catch{
        console.log("timeout catched");
@@ -51,7 +51,7 @@ async function getDom(group_id) {
       const context = await browser.createIncognitoBrowserContext();
       const page = await context.newPage();
       page.setViewport({width: 800, height: 20000 });
-      await page.goto(config.fbLink(group_id), {waitUntil: 'domcontentloaded'});
+      await page.goto(config.oldfbLink(group_id), {waitUntil: 'domcontentloaded'});
       await page.waitForTimeout( generateRandSeconds());
    
      // await page.screenshot({ path: './data/example.png' });
