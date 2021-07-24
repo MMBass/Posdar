@@ -51,12 +51,12 @@ async function getDom(group_id) {
       const context = await browser.createIncognitoBrowserContext();
       const page = await context.newPage();
       page.setViewport({width: 800, height: 20000 });
-      await page.goto("https://www.moreinvest.co.il/", {waitUntil: 'domcontentloaded'});
+      await page.goto(config.fbLink(group_id), {waitUntil: 'domcontentloaded'});
       await page.waitForTimeout( generateRandSeconds());
    
      // await page.screenshot({ path: './data/example.png' });
       let divsText = await page.evaluate(() => {
-        const results = Array.from(document.querySelectorAll(`p`));
+        const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
         return results.map((div) => div.textContent);
       });
       console.log("DIVS:  "+divsText);
