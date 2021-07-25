@@ -44,7 +44,7 @@ exports.scan = async function() {
 async function getDom(group_id) {
     try{
       browser = await puppeteer.launch({ 
-        headless: false,
+        headless: true,
         args:[
           '--proxy-server=socks4://'+generateRandProxy(),
           '--no-sandbox',
