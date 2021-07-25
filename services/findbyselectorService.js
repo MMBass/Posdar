@@ -44,7 +44,7 @@ exports.scan = async function() {
 async function getDom(group_id) {
     try{
       browser = await puppeteer.launch({ 
-        headless: true,
+        headless: false,
         args:[
           '--proxy-server=socks4://'+generateRandProxy(),
           '--no-sandbox',
@@ -60,7 +60,7 @@ async function getDom(group_id) {
         const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
         return results.map((div) => div.innerText);
       });
-
+      console.log(divsText[1]);
       await page.close();
       await browser.close();
       return divsText;
