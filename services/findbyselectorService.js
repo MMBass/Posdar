@@ -2,11 +2,12 @@ const puppeteer = require('puppeteer');
 const tasksModel = require('../models/tasks');
 const sendNewPosts = require('./sendnewpostsService');
 const config = require('../config/config');
+const proxyList = require('../data/openproxySpace');
 
 let browser;
 
 exports.scan = async function() {
-   //  let tasks = await tasksModel.readAll(); // recive all the tasks from the model
+  // let tasks = await tasksModel.readAll(); // recive all the tasks from the model
   if(typeof tasks !== "undefined"){
    if(tasks.length > 0){
     for(task of tasks){
@@ -45,22 +46,21 @@ async function getDom(group_id) {
       browser = await puppeteer.launch({ 
         headless: true,
         args:[
+          '--proxy-server=socks4://'+generateRandProxy(),
           '--no-sandbox',
           '--disable-setuid-sandbox',
       ]});
       const context = await browser.createIncognitoBrowserContext();
       const page = await context.newPage();
       page.setViewport({width: 800, height: 20000 });
-      await page.goto(config.oldfbLink(group_id), {waitUntil: 'domcontentloaded'});
+      await page.goto(config.fbLink(group_id), {waitUntil: 'domcontentloaded'});
       await page.waitForTimeout( generateRandSeconds());
    
-     // await page.screenshot({ path: './data/example.png' });
       let divsText = await page.evaluate(() => {
-        const results = Array.from(document.querySelectorAll(`div`));
+        const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
         return results.map((div) => div.innerText);
       });
-      console.log("DIVS:  "+divsText);
-      console.log("DIV:  "+divsText[0]);
+
       await page.close();
       await browser.close();
       return divsText;
@@ -73,9 +73,13 @@ async function getDom(group_id) {
 };
 
 function generateRandSeconds(){ 
-//   return (Math.floor(Math.random()* 10) + 10) * 1000;
-     return (Math.floor(Math.random()* 2) + 1) * 10000;
+  return (Math.floor(Math.random()* 10) + 10) * 1000;
 } // random seconds between 10 to 20
+
+function generateRandProxy(){
+    let randProxy = proxyList[(Math.floor(Math.random() * proxyList.length)-1)];
+    return randProxy;
+}
 
 function getNewRelevent(newPosts, taskText, notifiedPosts){
    let relevant = [];
