@@ -25,6 +25,6 @@ async function main(){
       await findBySelector.scan();
       main();
 }
-main();//Start scanning groups on startup 
+// main();//Start scanning groups on startup 
 
 module.exports = main;
