@@ -10,20 +10,6 @@ const startup = require('./startup');
 const app = express();
 const port = process.env.PORT || config.PORT;
 
-
-const tasksModel = require('./models/tasks');
-const emailService = require('./services/emailService');
-async function ann(){
-   let tasks = await tasksModel.find({});
-console.log(tasks); 
-}
-ann()
-emailService.sendEmail({
-    email:"0777816627a@gmail.com",
-    subject: "details.subject",
-    text: "details.text"
-});
-
 // startup(); //Start scanning groups on startup
 
 app.use(cors());

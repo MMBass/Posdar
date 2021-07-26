@@ -12,19 +12,18 @@ if (process.env.store !== 'heroku') {
     }
 }
 
-try {
-       // Set up mongoose connection
-      mongoose.connect(process.env.dbUrl || dev_db_Url, {useNewUrlParser: true, useUnifiedTopology: true});
-      const db = mongoose.connection;
-      db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-    } catch (e){
-        console.log(e);
-    }
+// Set up mongoose connection
+mongoose.connect(process.env.dbUrl || dev_db_Url, {useNewUrlParser: true, useUnifiedTopology: true})
+.then( console.log("connected"))
+.catch(error => console.log("MongoDB first connection error: "+error));
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 async function main(){
       await findBySelector.scan();
       main();
 }
-// main();//Start scanning groups on startup 
+main();//Start scanning groups on startup 
 
 module.exports = main;
