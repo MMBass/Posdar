@@ -7,13 +7,14 @@ const proxyList = require('../data/openproxySpace');
 let browser;
 
 exports.scan = async function() {
-
+  let tasks;
   try{
-  let tasks = await tasksModel.find({});// recive all the tasks from the model
-   }catch(e){
-      console.log("db"+ e)
-   }
- console.log("taskim:  "+ tasks);
+     tasks = await tasksModel.find({});// recive all the tasks from the model
+  }catch(e){
+     console.log("db"+ e)
+  }
+  console.log("taskim:  "+ tasks);
+  
   if(typeof tasks !== "undefined"){
    if(tasks.length > 0){
 
