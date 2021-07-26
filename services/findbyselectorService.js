@@ -15,14 +15,15 @@ exports.scan = async function() {
       try{
         let divsText = await getDom(task.group);
         if(divsText.length >= 2){
-          tasksModel.updateTask({key:"lastCheck",val:divsText, id:task.id}); //replacing the posts for debugging anyway;
+          await tasksModel.updateOne({"_id":task._id},{lastCheck:divsText}); //replacing the posts for debugging anyway;
+          
           let newRelevant;
           if(task.text && Array.isArray(task.text)) newRelevant = getNewRelevent(divsText, task.text, task.notifiedPosts);
           if(newRelevant && newRelevant.length > 0){
               newRelevant.forEach( postText =>{
                 sendNewPosts.sendToEmail(postText,task.email,task.group);
               });  
-              tasksModel.updateTask({key:"notifiedPosts",val:task.notifiedPosts.concat(newRelevant),  id:task.id});
+              await tasksModel.updateOne({"_id":task._id},{notifiedPosts:task.notifiedPosts.concat(newRelevant)});
           }
         }
       }catch (e){
@@ -35,8 +36,7 @@ exports.scan = async function() {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
     try{
-    await getDom("secretjerusalem")
-    await timeout(generateRandSeconds());
+       await timeout(generateRandSeconds());
     }catch{
        console.log("timeout catched");
     }
@@ -47,7 +47,7 @@ async function getDom(group_id) {
       browser = await puppeteer.launch({ 
         headless: true,
         args:[
-          '--proxy-server=socks4://'+generateRandProxy(),
+          // '--proxy-server=socks4://'+generateRandProxy(),
           '--no-sandbox',
           '--disable-setuid-sandbox',
       ]});
@@ -61,12 +61,11 @@ async function getDom(group_id) {
         const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
         return results.map((div) => div.innerText);
       });
-      console.log(divsText[1]);
       await page.close();
       await browser.close();
       return divsText;
     }catch (e){
-        if(browser){ await browser.close();}
+      if(browser){ await browser.close();}
       console.log('end with error + '+e);
     }finally{
         if(browser){ await browser.close();}

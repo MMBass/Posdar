@@ -26,17 +26,14 @@ const taskSchema = new mongoose.Schema({
     text: {
         type: Array,
         required: true,
-        default: []
     },
     lastCheck: {
-        type: Array,
-        required: false,
-        default: []
+        type: [String],
+        required: true,
     },
     notifiedPosts: {
-        type: Array,
-        required: false,
-        default: []
+        type: [String],
+        required: true,
     },
 });
 

@@ -30,9 +30,10 @@ exports.newRegister = [
                 date: new Date(),
                 group: req.body.group,
                 email: req.body.email,
-                text: clearList(req.body.text), 
+                text: clearList(req.body.text),
+                lastCheck: [],
+                notifiedPosts: []
             });
-        
             try{
                 await task.save() 
                 res.status(200).send("Task saved");
