@@ -14,9 +14,10 @@ exports.scan = async function() {
     for(task of tasks){
       try{
         let divsText = await getDom(task.group);
+         console.log("divs text:  "+ divsText);
         if(divsText.length >= 2){
           await tasksModel.updateOne({"_id":task._id},{lastCheck:divsText}); //replacing the posts for debugging anyway;
-          
+          console.log("after update :  "+task._id);
           let newRelevant;
           if(task.text && Array.isArray(task.text)) newRelevant = getNewRelevent(divsText, task.text, task.notifiedPosts);
           if(newRelevant && newRelevant.length > 0){
