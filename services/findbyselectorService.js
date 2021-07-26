@@ -8,8 +8,12 @@ let browser;
 
 exports.scan = async function() {
 
-  let tasks = await tasksModel.find({}).catch(e=>console.log(e));// recive all the tasks from the model
-  console.log("taskim:  "+ tasks);
+  try{
+  let tasks = await tasksModel.find({});// recive all the tasks from the model
+   }catch(e){
+      console.log("db"+ e)
+   }
+ console.log("taskim:  "+ tasks);
   if(typeof tasks !== "undefined"){
    if(tasks.length > 0){
 
