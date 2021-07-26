@@ -10,7 +10,7 @@ const startup = require('./startup');
 const app = express();
 const port = process.env.PORT || config.PORT;
 
-// startup(); //Start scanning groups on startup
+startup(); //Start scanning groups on startup
 
 app.use(cors());
 app.use(express.json());
