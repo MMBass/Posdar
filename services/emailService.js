@@ -10,6 +10,7 @@ if(process.env.store !== 'heroku'){
 }
 
 exports.sendEmail = function (details) {
+   console.log("mail service:   "+details)
   try{
     var transporter = nodemailer.createTransport({
       service: 'gmail',
