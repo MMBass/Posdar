@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path');
-const cors = require('cors')
+const cors = require('cors');
+const mongoose = require('mongoose');
 
 const config = require('./config/config');
 const myAuth = require('./services/authService.js');
@@ -9,6 +10,23 @@ const findBySelector = require('./services/findbyselectorService.js');
 
 const app = express();
 const port = process.env.PORT || config.PORT;
+
+let dev_db_Url;
+let privateConfig;
+if (process.env.store !== 'heroku') {
+    try {
+        privateConfig = require('./config/privateConfig');
+        dev_db_Url = privateConfig.dev_db_Url;
+    } catch {
+        console.log("privateConfig doesnt exist");
+    }
+}
+
+// Set up mongoose connection
+mongoose.connect(process.env.dbUrl || dev_db_Url, {useNewUrlParser: true, useUnifiedTopology: true});
+const db = mongoose.connection;
+// db.on('open', console.log('db connected...'));
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 (async function main(){
       await findBySelector.scan();

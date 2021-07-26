@@ -1,7 +1,8 @@
 const { body, validationResult } = require('express-validator');
+let privateConfig;
 if(process.env.store !== 'heroku'){
   try{
-    const privateConfig = require('../config/privateConfig');
+    privateConfig = require('../config/privateConfig');
   }catch{
     console.log("privateConfig doesnt exist");
   }

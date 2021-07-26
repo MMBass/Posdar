@@ -7,7 +7,8 @@ const proxyList = require('../data/openproxySpace');
 let browser;
 
 exports.scan = async function() {
-  // let tasks = await tasksModel.readAll(); // recive all the tasks from the model
+  let tasks = await tasksModel.find({}).catch(e=>console.log(e));// recive all the tasks from the model
+  
   if(typeof tasks !== "undefined"){
    if(tasks.length > 0){
     for(task of tasks){
@@ -44,7 +45,7 @@ exports.scan = async function() {
 async function getDom(group_id) {
     try{
       browser = await puppeteer.launch({ 
-        headless: false,
+        headless: true,
         args:[
           '--proxy-server=socks4://'+generateRandProxy(),
           '--no-sandbox',

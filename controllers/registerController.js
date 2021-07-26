@@ -23,27 +23,22 @@ exports.newRegister = [
             return;
         }else {
 
-            const task =  {
-                "id": new Date(),
-                "user": req.body.userName,
-                "time": "", //break between client notified (every day, every minute etc.)
-                "date": new Date(), //create date
-                "group": req.body.group,
-                "email": req.body.email,
-                "text": clearList(req.body.text), 
-                "lastCheck": [],
-                "notifiedPosts": []
-            };
-
             //TODO check here if task already exist 
-            let taskExist = await checkexistService.checkExist("tasks",task);
-            if(!taskExist){
-                await tasksModel.writeTask(task);
-                // Data from form is valid. Save the task.
-                res.status(200).send("Saved to your list, you will get a message when we will find somenthing for you");
-            }else if(taskExist){
-                res.status(200).send("Task already exist");
-            };
+            const task = new tasksModel({
+                user: req.body.userName,
+                time: "", //break between client notified (every day, every minute etc.)
+                date: new Date(),
+                group: req.body.group,
+                email: req.body.email,
+                text: clearList(req.body.text), 
+            });
+        
+            try{
+                await task.save() 
+                res.status(200).send("Task saved");
+            }catch(err){
+                res.status(500).send("Error saving");
+            }
 
         }
     }
