@@ -12,6 +12,7 @@ exports.scan = async function() {
   if(typeof tasks !== "undefined"){
    if(tasks.length > 0){
     for(task of tasks){
+       console.log("task:  "+ task);
       try{
         let divsText = await getDom(task.group);
          console.log("divs text:  "+ divsText);
