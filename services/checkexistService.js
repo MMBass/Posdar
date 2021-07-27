@@ -1,6 +1,6 @@
 const tasksModel = require('../models/tasks');
 
-// TODO delete if tond needed
+// TODO delete if dont needed
 
 exports.checkExist = function(model, data){
     // model can be "task", "user"

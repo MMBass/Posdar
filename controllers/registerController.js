@@ -9,10 +9,9 @@ exports.newRegister = [
     body('group', "no Group id").exists().trim().isLength({ min: 3 }).escape(),
     body('text', "array text error").exists().isArray(),
     //TODO add the words fields vaildation, and token maybe.
-
+    //TODO lowercase all the text
     // Process request after validation and sanitization.
     async (req, res, next) => {
-        console.log(req.body)
         // Extract the validation errors from a request.
         const errors = validationResult(req);
    

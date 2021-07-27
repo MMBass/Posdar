@@ -28,6 +28,7 @@ async function createOne(details) {
 };
 
 async function putOne(id,newvalues = {}) {
+    console.log(id,newvalues );
     await client.connect();
     await collection.updateOne({_id:id},{ $set: newvalues })
     client.close();

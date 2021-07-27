@@ -3,7 +3,6 @@ const tasksModel = require('../models/tasks');
 const sendNewPosts = require('./sendnewpostsService');
 const config = require('../config/config');
 const proxyList = require('../data/openproxySpace');
-const { json } = require('express');
 
 let browser;
 
@@ -11,22 +10,18 @@ exports.scan = async function() {
   let tasks;
   try{
     tasks = await tasksModel.readAll();// recive all the tasks from the model
-    console.log("taskim:  ", tasks);
   }catch(e){
      console.log("db"+ e)
   }
 
   if(typeof tasks !== "undefined"){
    if(tasks.length > 0){
-
     for(task of tasks){
-       console.log("task:  ",task);
       try{
         let divsText = await getDom(task.group);
-         console.log("divs text:  "+ divsText);
         if(divsText.length >= 2){
+          console.log(divsText );
           await tasksModel.putOne(task._id,{lastCheck:divsText}); //replacing the posts for debugging anyway;
-          console.log("after update :  "+task._id);
           let newRelevant;
           if(task.text && Array.isArray(task.text)) newRelevant = getNewRelevent(divsText, task.text, task.notifiedPosts);
           if(newRelevant && newRelevant.length > 0){
