@@ -20,18 +20,25 @@ async function readAll() {
     return all;
 };
 
-async function createOne() {
+async function createOne(details) {
     await client.connect();
-    await collection.find({}).toArray();
+    await collection.insertOne(details);
     client.close();
     return true;
 };
 
-async function updateOne() {
+async function putOne(id,newvalues = {}) {
     await client.connect();
-    await collection.find({}).toArray();
+    await collection.updateOne({_id:id},{ $set: newvalues })
     client.close();
     return true;
 };
 
-module.exports = {readAll,createOne,updateOne};
+async function removeOne() {
+    // await client.connect();
+    // await collection.find({}).toArray();
+    // client.close();
+    // return true;
+};
+
+module.exports = {readAll,createOne,putOne, removeOne};

@@ -24,7 +24,7 @@ exports.newRegister = [
         }else {
 
             //TODO check here if task already exist 
-            const task = new tasksModel({
+            const task = {
                 user: req.body.userName,
                 time: "", //break between client notified (every day, every minute etc.)
                 date: new Date(),
@@ -33,9 +33,9 @@ exports.newRegister = [
                 text: clearList(req.body.text),
                 lastCheck: [],
                 notifiedPosts: []
-            });
+            };
             try{
-                await task.save() 
+                await tasksModel.createOne(task);
                 res.status(200).send("Task saved");
             }catch(err){
                 res.status(500).send("Error saving");
@@ -64,7 +64,7 @@ exports.newRegister = [
             return;
         }
         else {
-            await tasksModel.deleteTask(task);
+            await tasksModel.removeOne(task);
             // Data from form is valid. Delete the task.
             res.send({message:"Saved to your list, you will get a message when we will find somenthing new"});
         }

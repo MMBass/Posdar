@@ -25,7 +25,7 @@ exports.scan = async function() {
         let divsText = await getDom(task.group);
          console.log("divs text:  "+ divsText);
         if(divsText.length >= 2){
-          await tasksModel.updateOne({"_id":task._id},{lastCheck:divsText}); //replacing the posts for debugging anyway;
+          await tasksModel.putOne(task._id,{lastCheck:divsText}); //replacing the posts for debugging anyway;
           console.log("after update :  "+task._id);
           let newRelevant;
           if(task.text && Array.isArray(task.text)) newRelevant = getNewRelevent(divsText, task.text, task.notifiedPosts);
@@ -33,7 +33,7 @@ exports.scan = async function() {
               newRelevant.forEach( postText =>{
                 sendNewPosts.sendToEmail(postText,task.email,task.group);
               });  
-              await tasksModel.updateOne({"_id":task._id},{notifiedPosts:task.notifiedPosts.concat(newRelevant)});
+              await tasksModel.putOne(task._id,{notifiedPosts:task.notifiedPosts.concat(newRelevant)});
           }
         }
       }catch (e){
