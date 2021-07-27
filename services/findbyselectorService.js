@@ -23,6 +23,7 @@ exports.scan = async function() {
           await tasksModel.putOne(task._id,{lastCheck:divsText}); //replacing the posts for debugging anyway;
           let newRelevant;
           if(task.text && Array.isArray(task.text)) newRelevant = getNewRelevent(divsText, task.text, task.notifiedPosts);
+          console.log(newRelevant)
           if(newRelevant && newRelevant.length > 0){
               for(postText in  newRelevant){
                    console.log(postText);

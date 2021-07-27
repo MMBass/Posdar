@@ -12,7 +12,7 @@ if (process.env.store !== 'heroku') {
 exports.sendEmail = async function (details) {
   try {
     var transporter = nodemailer.createTransport({
-      service: 'outlook',
+      service: 'zoho',
       auth: {
         user: process.env.emailUser || privateConfig.emailUser,
         pass: process.env.emailPass || privateConfig.emailPass
