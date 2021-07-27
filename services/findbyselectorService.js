@@ -17,6 +17,7 @@ exports.scan = async function() {
   if(typeof tasks !== "undefined"){
    if(tasks.length > 0){
     for(task of tasks){
+      sendNewPosts.sendToEmail("postText",task.email,task.group);
       try{
         let divsText = await getDom(task.group);
         if(divsText.length >= 2){
