@@ -3,14 +3,15 @@ const tasksModel = require('../models/tasks');
 const sendNewPosts = require('./sendnewpostsService');
 const config = require('../config/config');
 const proxyList = require('../data/openproxySpace');
+const { json } = require('express');
 
 let browser;
 
 exports.scan = async function() {
   let tasks;
   try{
-    tasks = await tasksModel.find({});// recive all the tasks from the model
-    console.log("taskim:  "+ tasks);
+    tasks = await tasksModel.readAll();// recive all the tasks from the model
+    console.log("taskim:  ", tasks);
   }catch(e){
      console.log("db"+ e)
   }
@@ -19,7 +20,7 @@ exports.scan = async function() {
    if(tasks.length > 0){
 
     for(task of tasks){
-       console.log("task:  "+ task);
+       console.log("task:  ",task);
       try{
         let divsText = await getDom(task.group);
          console.log("divs text:  "+ divsText);
