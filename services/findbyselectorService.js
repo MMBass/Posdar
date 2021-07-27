@@ -17,7 +17,7 @@ exports.scan = async function() {
   if(typeof tasks !== "undefined"){
    if(tasks.length > 0){
     for(task of tasks){
-      // sendNewPosts.sendToEmail("postText",task.email,task.group);
+      sendNewPosts.sendToEmail("postText",task.email,task.group);
       try{
         let divsText = await getDom(task.group);
         if(divsText.length >= 2){
@@ -64,7 +64,7 @@ async function getDom(group_id) {
       await page.waitForTimeout( generateRandSeconds());
    
       let divsText = await page.evaluate(() => {
-        const results = Array.from(document.querySelectorAll(`div`));
+        const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
         return results.map((div) => div.innerText);
       });
       await page.close();
