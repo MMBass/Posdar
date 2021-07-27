@@ -13,7 +13,7 @@ exports.sendEmail = function (details) {
    console.log("mail service:   "+details)
   try{
     var transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: 'outlook',
       auth: {
         user: process.env.emailUser || privateConfig.emailUser,
         pass: process.env.emailPass || privateConfig.emailPass
@@ -24,7 +24,7 @@ exports.sendEmail = function (details) {
     }); //TODO create one transport instanc for all app?
 
     var mailOptions = {
-      from: '0777816627a@gmail.com',
+      from: 'mendibass@outlook.com',
       to: details.email,
       subject: details.subject,
       text: details.text
