@@ -17,11 +17,9 @@ exports.scan = async function() {
   if(typeof tasks !== "undefined"){
    if(tasks.length > 0){
     for(task of tasks){
-      sendNewPosts.sendToEmail("postText",task.email,task.group);
       try{
         let divsText = await getDom(task.group);
         if(divsText.length >= 2){
-          console.log(divsText );
           await tasksModel.putOne(task._id,{lastCheck:divsText}); //replacing the posts for debugging anyway;
           let newRelevant;
           if(task.text && Array.isArray(task.text)) newRelevant = getNewRelevent(divsText, task.text, task.notifiedPosts);
