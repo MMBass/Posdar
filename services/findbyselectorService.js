@@ -28,11 +28,10 @@ exports.scan = async function() {
                    console.log(postText);
                    try{
                     await sendNewPosts.sendToEmail(postText,task.email,task.group);
+                    await tasksModel.putOne(task._id,{notifiedPosts:task.notifiedPosts.concat(newRelevant)});
                    }catch(e){
                     console.log(e);
-                    continue;
                    }
-                   await tasksModel.putOne(task._id,{notifiedPosts:task.notifiedPosts.concat(newRelevant)});
               };  
              
           }
