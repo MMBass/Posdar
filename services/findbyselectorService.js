@@ -19,16 +19,23 @@ exports.scan = async function() {
     for(task of tasks){
       try{
         let divsText = await getDom(task.group);
-         console.log(divsText)
         if(divsText.length >= 2){
           await tasksModel.putOne(task._id,{lastCheck:divsText}); //replacing the posts for debugging anyway;
           let newRelevant;
           if(task.text && Array.isArray(task.text)) newRelevant = getNewRelevent(divsText, task.text, task.notifiedPosts);
+          console.log(newRelevant)
           if(newRelevant && newRelevant.length > 0){
-              newRelevant.forEach( postText =>{
-                sendNewPosts.sendToEmail(postText,task.email,task.group);
-              });  
-              await tasksModel.putOne(task._id,{notifiedPosts:task.notifiedPosts.concat(newRelevant)});
+              for(postText in  newRelevant){
+                   console.log(postText);
+                   try{
+                    await sendNewPosts.sendToEmail(postText,task.email,task.group);
+                   }catch(e){
+                    console.log(e);
+                    continue;
+                   }
+                   await tasksModel.putOne(task._id,{notifiedPosts:task.notifiedPosts.concat(newRelevant)});
+              };  
+             
           }
         }
       }catch (e){
@@ -50,9 +57,9 @@ exports.scan = async function() {
 async function getDom(group_id) {
     try{
       browser = await puppeteer.launch({ 
-        headless: true,
+        headless: false,
         args:[
-          '--proxy-server=socks4://'+generateRandProxy(),
+          // '--proxy-server=socks4://'+generateRandProxy(),
           '--no-sandbox',
           '--disable-setuid-sandbox',
       ]});

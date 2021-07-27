@@ -1,17 +1,16 @@
 const nodemailer = require('nodemailer');
 
 let privateConfig;
-if(process.env.store !== 'heroku'){
-  try{
+if (process.env.store !== 'heroku') {
+  try {
     privateConfig = require('../config/privateConfig');
-  }catch{
+  } catch {
     console.log("privateConfig doesnt exist");
   }
 }
 
-exports.sendEmail = function (details) {
-   console.log("mail service:   "+details)
-  try{
+exports.sendEmail = async function (details) {
+  try {
     var transporter = nodemailer.createTransport({
       service: 'outlook',
       auth: {
@@ -24,21 +23,16 @@ exports.sendEmail = function (details) {
     }); //TODO create one transport instanc for all app?
 
     var mailOptions = {
-      from: 'mendibass@outlook.com',
+      from: 'mendibass@zohomail.com',
       to: details.email,
       subject: details.subject,
       text: details.text
     };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      console.log("trying to send")
-if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
-  }catch (e){
-    console.log(e);
+    
+      await transporter.sendMail(mailOptions);
+      // return "sent";
+  } catch (e) {
+      console.log(e);
+      // return "send faild";
   }
 }
