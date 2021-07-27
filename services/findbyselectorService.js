@@ -63,7 +63,7 @@ async function getDom(group_id) {
       await page.waitForTimeout( generateRandSeconds());
    
       let divsText = await page.evaluate(() => {
-        const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
+        const results = Array.from(document.querySelectorAll(`div`));
         return results.map((div) => div.innerText);
       });
       await page.close();
