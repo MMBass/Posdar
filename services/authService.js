@@ -1,15 +1,8 @@
 const { body, validationResult } = require('express-validator');
-let privateConfig;
-if(process.env.store !== 'heroku'){
-  try{
-    privateConfig = require('../config/privateConfig');
-  }catch{
-    console.log("privateConfig doesnt exist");
-  }
-}
+const dev_config = (process.env.store === undefined) ? require('../config/devConfig') : undefined;
 
 function validateToken(reqToken,cb){
-    let secretToken = process.env.secretToken ||privateConfig.secretToken;
+    let secretToken = process.env.secretToken ||dev_config.secretToken;
     if(reqToken === secretToken){
       cb(null,true)
     }

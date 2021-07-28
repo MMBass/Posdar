@@ -11,7 +11,7 @@ exports.scan = async function() {
   try{
     tasks = await tasksModel.readAll();// recive all the tasks from the model
   }catch(e){
-     console.log("db"+ e)
+     console.log("db recive error: "+ e)
   }
 
   if(typeof tasks !== "undefined"){
@@ -48,7 +48,7 @@ async function getDom(group_id) {
       browser = await puppeteer.launch({ 
         headless: true,
         args:[
-          '--proxy-server=socks4://'+generateRandProxy(),
+          // '--proxy-server=socks4://'+generateRandProxy(),
           '--no-sandbox',
           '--disable-setuid-sandbox',
       ]});
@@ -62,11 +62,8 @@ async function getDom(group_id) {
         const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
         return results.map((div) => div.innerText);
       });
-      await page.close();
-      await browser.close();
       return divsText;
     }catch (e){
-      if(browser){ await browser.close();}
       console.log('end with error + '+e);
     }finally{
         if(browser){ await browser.close();}
@@ -96,6 +93,9 @@ function getNewRelevent(newPosts, taskText, notifiedPosts){
    });
    
    relevant.forEach(post => {
+    console.log("SINGLE POST:   "+post);
+    console.log("NOTI:   " +notifiedPosts.toString());
+    console.log("INCLUEDS?  "+notifiedPosts.toString().includes(post));
         if(!notifiedPosts.toString().includes(post)){
           newRelevant.push(post);
         }
