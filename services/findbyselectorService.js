@@ -48,7 +48,7 @@ async function getDom(group_id) {
       browser = await puppeteer.launch({ 
         headless: true,
         args:[
-          // '--proxy-server=socks4://'+generateRandProxy(),
+          '--proxy-server=socks4://'+generateRandProxy(),
           '--no-sandbox',
           '--disable-setuid-sandbox',
       ]});
