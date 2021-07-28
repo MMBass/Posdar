@@ -14,7 +14,7 @@ async function startup(){
     await findBySelector.scan();
     startup();
 }
-startup(); //Start scanning groups on startup
+// startup(); //Start scanning groups on startup
 
 app.use(cors());
 app.use(express.json());
