@@ -24,16 +24,7 @@ exports.scan = async function() {
           let newRelevant;
           if(task.text && Array.isArray(task.text)) newRelevant = getNewRelevent(divsText, task.text, task.notifiedPosts);
           if(newRelevant && newRelevant.length > 0){
-              for(postText of newRelevant){
-                   console.log(postText);
-                   try{
-                    await sendNewPosts.sendToEmail(postText,task.email,task.group);
-                    await tasksModel.putOne(task._id,{notifiedPosts:task.notifiedPosts.concat(newRelevant)});
-                   }catch(e){
-                    console.log(e);
-                   }
-              };  
-             
+             await sendNewPosts.sendEmails(newRelevant,task);
           }
         }
       }catch (e){
@@ -97,7 +88,7 @@ function getNewRelevent(newPosts, taskText, notifiedPosts){
   
    newPosts.forEach((post)=>{
       for(words of taskText){
-          if(post.includes(words)){
+          if(post.toLocaleLowerCase().includes(words.toLocaleLowerCase())){
             relevant.push(post);
             break; // one match is enough
           }

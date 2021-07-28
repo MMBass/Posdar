@@ -1,15 +1,14 @@
 const { body, validationResult } = require('express-validator');
 const tasksModel = require('../models/tasks');
-const checkexistService = require('../services/checkexistService');
 
 exports.newRegister = [
     // Validate and santitize fields.
     body('userName', "invalid userName").exists().isEmail().escape(),
     body('email', 'Invalid email').exists().trim().isEmail().escape(),
-    body('group', "no Group id").exists().trim().isLength({ min: 3 }).escape(),
+    body('group', "no Group id").exists().trim().isLength({ min: 3 }),
     body('text', "array text error").exists().isArray(),
-    //TODO add the words fields vaildation, and token maybe.
-    //TODO lowercase all the text
+    //TODO add the words fields escaping, and token?.
+
     // Process request after validation and sanitization.
     async (req, res, next) => {
         // Extract the validation errors from a request.
@@ -22,7 +21,6 @@ exports.newRegister = [
             return;
         }else {
 
-            //TODO check here if task already exist 
             const task = {
                 user: req.body.userName,
                 time: "", //break between client notified (every day, every minute etc.)

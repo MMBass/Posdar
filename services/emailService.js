@@ -9,30 +9,28 @@ if (process.env.store !== 'heroku') {
   }
 }
 
+const transporter = nodemailer.createTransport({
+  service: 'zoho',
+  auth: {
+    user: process.env.emailUser || privateConfig.emailUser,
+    pass: process.env.emailPass || privateConfig.emailPass
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+}); //TODO track if one instance is good;
+
 exports.sendEmail = async function (details) {
   try {
-    var transporter = nodemailer.createTransport({
-      service: 'zoho',
-      auth: {
-        user: process.env.emailUser || privateConfig.emailUser,
-        pass: process.env.emailPass || privateConfig.emailPass
-      },
-      tls: {
-        rejectUnauthorized: false
-      }
-    }); //TODO create one transport instanc for all app?
-
-    var mailOptions = {
+    const mailOptions = {
       from: 'mendibass@zohomail.com',
       to: details.email,
       subject: details.subject,
       text: details.text
     };
-    
-      await transporter.sendMail(mailOptions);
-      // return "sent";
+    await transporter.sendMail(mailOptions);
+
   } catch (e) {
-      console.log(e);
-      // return "send faild";
+    console.log(e);
   }
 }
