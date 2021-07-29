@@ -5,6 +5,7 @@ const config = require('../config/config');
 const proxyList = require('../data/openproxySpace');
 
 let browser;
+let page;
 
 exports.scan = async function() {
   let tasks;
@@ -53,20 +54,23 @@ async function getDom(group_id) {
           '--disable-setuid-sandbox',
       ]});
       const context = await browser.createIncognitoBrowserContext();
-      const page = await context.newPage();
+      page = await context.newPage();
       page.setViewport({width: 800, height: 20000 });
       await page.goto(config.fbLink(group_id), {waitUntil: 'domcontentloaded'});
       await page.waitForTimeout( generateRandSeconds());
    
       let divsText = await page.evaluate(() => {
-        const results = Array.from(document.querySelectorAll(`div[data-ad-preview="message"]`));
+        const results = Array.from(document.querySelectorAll(`div.rq0escxv.a8c37x1j.rz4wbd8a.a8nywdso, div[data-ad-preview="message"],  div.linoseic.ggxiycxj.hihg3u9x`));
+
         return results.map((div) => div.innerText);
       });
+      await page.close();
+      await browser.close();
       return divsText;
     }catch (e){
+      await page.close();
+      await browser.close();
       console.log('end with error + '+e);
-    }finally{
-        if(browser){ await browser.close();}
     }
 };
 
@@ -93,12 +97,10 @@ function getNewRelevent(newPosts, taskText, notifiedPosts){
    });
    
    relevant.forEach(post => {
-    console.log("SINGLE POST:   "+post);
-    console.log("NOTI:   " +notifiedPosts.toString());
-    console.log("INCLUEDS?  "+notifiedPosts.toString().includes(post));
-        if(!notifiedPosts.toString().includes(post)){
-          newRelevant.push(post);
-        }
+      post = post.split("...")[0]; // remove string that represents 'more' in other langs
+      if(!notifiedPosts.toString().includes(post)){
+        newRelevant.push(post);
+      }
    });
   return newRelevant;
 }// look for match and new in the new posts array

@@ -17,7 +17,7 @@ exports.sendEmail = async function (details) {
       from: process.env.emailUser || dev_config.emailUser,
       to: details.email,
       subject: details.subject,
-      text: details.text
+      html: details.template
     };
     await transporter.sendMail(mailOptions);
 }
