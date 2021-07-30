@@ -66,6 +66,7 @@ async function getDom(group_id) {
       });
       await page.close();
       await browser.close();
+      divsText = [...new Set(divsText)]; //removing duplicates
       return divsText;
     }catch (e){
       await page.close();

@@ -3,7 +3,8 @@ const config = require('../config/config');
 const tasksModel = require('../models/tasks');
 
 exports.sendEmails = async function (newRelevant,task) {
-  const subject = "Posdar. New post in group " + task.group;
+  const rand = (Math.random() + 1).toString(36).substring(2);
+  const subject = "Posdar. New post in group " + task.group + "  (ID:"+ rand+ ")";
   const link = `Link to group: ` + config.fbLink(task.group);
   const email = task.email;
 
