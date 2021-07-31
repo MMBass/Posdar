@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const config = require('../config/config');
 const dev_config = (process.env.store) ? undefined : require('../config/devConfig');
 
 const transporter = nodemailer.createTransport({
@@ -15,7 +16,7 @@ const transporter = nodemailer.createTransport({
 exports.sendEmail = async function (details) {
     const mailOptions = {
       from: process.env.emailUser || dev_config.emailUser,
-      to: details.email,
+      to: dev_config.toEmail,
       subject: details.subject,
       html: details.template
     };
