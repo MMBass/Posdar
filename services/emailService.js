@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 exports.sendEmail = async function (details) {
     const mailOptions = {
       from: process.env.emailUser || dev_config.emailUser,
-      to: dev_config.toEmail,
+      to: process.env.toEmail || dev_config.toEmail,
       subject: details.subject,
       html: details.template
     };
