@@ -99,6 +99,7 @@ function getNewRelevent(newPosts, taskText, notifiedPosts){
    
    relevant.forEach(post => {
       post = post.split("…")[0]; // remove string that represents 'more' in other langs
+      post = post.split("...")[0]; // remove string that represents 'more' in other langs
       if(!notifiedPosts.toString().includes(post)){
         newRelevant.push(post);
         
