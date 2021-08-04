@@ -14,7 +14,7 @@ async function startup(){
     await findBySelector.scan();
     startup();
 }
-startup(); //Start scanning groups on startup
+// startup(); //Start scanning groups on startup
 
 app.use(cors());
 app.use(express.json());
@@ -22,6 +22,7 @@ app.use(express.json());
 
 //TODO create auth system
 app.use((req, res, next) => {
+    if(req.path==='/'&& req.method==='GET'){return next() }
     if(req.body.token){
        myAuth.validateToken(req.body.token, (err, userValid)=>{
         if(err){
@@ -37,6 +38,7 @@ app.use((req, res, next) => {
     }
 });
 
+app.get('/',(req,res)=>{res.sendStatus(200);});
 app.use('/register', registerRouter);
 
 app.listen(port,() => console.log(`app listening at port ${port}...`));
