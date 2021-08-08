@@ -16,11 +16,11 @@ exports.newRegister = [
 
         if (!errors.isEmpty()) {
             // There are errors. Render form again with sanitized values/error messages.
-            res.status(200).send("Some of the fields missing or incorrect");
+            res.status(400).send({message:"Some of the fields missing or incorrect"});
             return;
         } else {
             if (findChars(req.body.text)=== "false") {
-                res.status(400).send("The text must contain only letters or numbers");
+                res.status(400).send({message:"The text must contain only letters or numbers"});
             }else{
                 const task = {
                     user: req.body.userName,
@@ -34,9 +34,9 @@ exports.newRegister = [
                 };
                 try {
                     await tasksModel.createOne(task);
-                    res.status(200).send("Task saved");
+                    res.status(200).send({message:"Task saved"});
                 } catch (err) {
-                    res.status(500).send("Error saving");
+                    res.status(500).send({message:"Error saving"});
                 }
             }
 
@@ -73,7 +73,7 @@ exports.delRegister = [
 function findChars(text) {
     const regex = /[^A-Za-z0-9]+/;
     text.forEach((a) => {
-        if (regex.test(a)) {
+        if (!regex.test(a)) {
             return "false";
         }
     });
