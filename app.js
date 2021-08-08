@@ -28,7 +28,7 @@ app.use((req, res, next) => {
         if(err){
             res.status(500).send({message:'Server Error'});
         }else if(!userValid){
-            res.status(403).send({message:'Accsess denied'});
+            res.status(401).send({message:'Accsess denied'});
         }else if(userValid){
             next();
         }

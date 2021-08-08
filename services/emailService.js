@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: false
   }
-}); //TODO track if one instance is good;
+});
 
 exports.sendEmail = async function (details) {
     const mailOptions = {
