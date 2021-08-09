@@ -19,7 +19,7 @@ exports.newRegister = [
             res.status(400).send({message:"Some of the fields missing or incorrect"});
             return;
         } else {
-            if (findChars(req.body.text)=== "false") {
+            if (findChars(req.body.text) == false) {
                 res.status(400).send({message:"The text must contain only letters or numbers"});
             }else{
                 const task = {
@@ -71,13 +71,13 @@ exports.delRegister = [
 ];
 
 function findChars(text) {
-    const regex = /[^A-Za-z0-9]+/;
+    let test = true;
     text.forEach((a) => {
-        if (!regex.test(a)) {
-            return "false";
+        if (a.match(/[^A-Za-z0-9]+/) !== null) {
+            test = false;
         }
     });
-    return true;
+    return test;
 }
 
 function clearList(text) {
