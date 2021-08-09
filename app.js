@@ -6,6 +6,7 @@ const findBySelector = require('./services/findbyselectorService.js');
 const config = require('./config/config');
 const myAuth = require('./services/authService.js');
 const registerRouter = require('./routes/register.js');
+const listRouter = require('./routes/list.js');
 
 const app = express();
 const port = process.env.PORT || config.PORT;
@@ -14,7 +15,7 @@ async function startup(){
     await findBySelector.scan();
     startup();
 }
-startup(); //Start scanning groups on startup
+// startup(); //Start scanning groups on startup
 
 app.use(cors());
 app.use(express.json());
@@ -40,5 +41,6 @@ app.use((req, res, next) => {
 
 app.get('/',(req,res)=>{res.sendStatus(200);});
 app.use('/register', registerRouter);
+app.use('/list', listRouter);
 
 app.listen(port,() => console.log(`app listening at port ${port}...`));
