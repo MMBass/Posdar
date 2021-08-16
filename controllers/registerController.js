@@ -1,5 +1,27 @@
-const { body, validationResult } = require('express-validator');
+const { header, body, validationResult} = require('express-validator');
 const tasksModel = require('../models/tasks');
+
+exports.getList = [
+    // Validate and santitize fields.
+    header('userName', "userName required").exists().isEmail().escape(),
+
+    // Process request after validation and sanitization.
+    async (req, res, next) => {
+
+        // Extract the validation errors from a request.
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            // There are errors. Render form again with sanitized values/error messages.
+            res.status(200).send({ message: "Some of the fields missing or incorrect" });
+            return;
+        }
+        else {
+            const all = await tasksModel.readAll();
+            res.send({tasks: all});
+        }
+    }
+];
 
 exports.newRegister = [
     // Validate and santitize fields.
@@ -7,7 +29,6 @@ exports.newRegister = [
     body('email', 'Invalid email').exists().trim().isEmail().escape(),
     body('group', "no Group id").exists().trim().isLength({ min: 3 }),
     body('text', "array text error").exists().isArray(),
-    //TODO regex for words to not contain special chars, and return to client "try again";
 
     // Process request after validation and sanitization.
     async (req, res, next) => {
@@ -59,13 +80,13 @@ exports.delRegister = [
 
         if (!errors.isEmpty()) {
             // There are errors. Render form again with sanitized values/error messages.
-            res.status(200).send({ message: "Some of the fields missing or incorrect" });
+            res.status(200).send({ message: "data missing or incorrect" });
             return;
         }
         else {
-            await tasksModel.removeOne(task);
+            await tasksModel.removeOne(task._id);
             // Data from form is valid. Delete the task.
-            res.send({ message: "Saved to your list, you will get a message when we will find somenthing new" });
+            res.send({ message: "Task Deleted"});
         }
     }
 ];

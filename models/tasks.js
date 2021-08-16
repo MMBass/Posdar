@@ -25,11 +25,11 @@ async function putOne(id,newvalues = {}) {
     return true;
 };
 
-async function removeOne() {
-    // await client.connect();
-    // await collection.find({}).toArray();
-    // client.close();
-    // return true;
+async function removeOne(id) {
+    await client.connect();
+    await collection.deleteOne({_id:id});
+    client.close();
+    return true;
 };
 
 module.exports = {readAll,createOne,putOne, removeOne};
