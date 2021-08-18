@@ -3,6 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const findBySelector = require('./services/findbyselectorService.js');
 const config = require('./config/config');
+const dev_config = require('./config/devConfig');
 const myAuth = require('./services/authService.js');
 const registerRouter = require('./routes/register.js');
 
@@ -13,14 +14,14 @@ async function startup(){
     await findBySelector.scan();
     startup();
 }
-startup(); //Start scanning groups on startup
+// startup(); //Start scanning groups on startup
 
 app.use(cors());
 app.use(express.json());
 
 app.use((req, res, next) => {
-    console.log(req.header)
-    if(req.path==='/'&& req.method==='GET'){return next() }
+    if(req.method==='DELETE'){req.headers["token"] = process.env.secretToken || dev_config.secretToken} // todo change to LS+JWT token;
+    if(req.path==='/'&& req.method==='GET'){return next()}
 
     if(req.header("token")){
        myAuth.validateToken(req.header("token"), (err, userValid)=>{

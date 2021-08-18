@@ -13,7 +13,7 @@ exports.getList = [
 
         if (!errors.isEmpty()) {
             // There are errors. Render form again with sanitized values/error messages.
-            res.status(200).send({ message: "Some of the fields missing or incorrect" });
+            res.status(400).send({ message: "Some of the fields missing or incorrect" });
             return;
         }
         else {
@@ -67,26 +67,22 @@ exports.newRegister = [
 
 exports.delRegister = [
     // Validate and santitize fields.
-    body('userName', "userName doesn't exists").exists().isEmail().escape(),
-    body('email', 'Invalid email').exists().trim().isEmail().escape(),
-    body('group', "no Group id").exists().trim().isLength({ min: 3 }).escape(),
+    header('t_id', "userName doesn't exists").exists().escape(),
 
     // Process request after validation and sanitization.
     async (req, res, next) => {
-
         // Extract the validation errors from a request.
         const errors = validationResult(req);
-        const task = req.body;
 
         if (!errors.isEmpty()) {
             // There are errors. Render form again with sanitized values/error messages.
-            res.status(200).send({ message: "data missing or incorrect" });
+            res.status(400).send({ message: "data missing or incorrect" });
             return;
         }
         else {
-            await tasksModel.removeOne(task._id);
+            await tasksModel.removeOne(req.header("t_id"));
             // Data from form is valid. Delete the task.
-            res.send({ message: "Task Deleted"});
+            res.status(200).send({ message: "Task Deleted"});
         }
     }
 ];

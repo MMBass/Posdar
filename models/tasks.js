@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const dev_config = (process.env.store === undefined) ? require('../config/devConfig') : undefined;
 const dev_db_Url = (dev_config) ? dev_config.dev_db_Url : undefined;
 const client = new MongoClient(process.env.dbUrl || dev_db_Url);
@@ -20,14 +20,14 @@ async function createOne(details) {
 
 async function putOne(id,newvalues = {}) {
     await client.connect();
-    await collection.updateOne({_id:id},{ $set: newvalues })
+    await collection.updateOne({_id:ObjectId(id)},{ $set: newvalues })
     client.close();
     return true;
 };
 
 async function removeOne(id) {
     await client.connect();
-    await collection.deleteOne({_id:id});
+    await collection.deleteOne({_id:ObjectId(id)});
     client.close();
     return true;
 };
