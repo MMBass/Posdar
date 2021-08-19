@@ -3,9 +3,9 @@ const path = require('path');
 const cors = require('cors');
 const findBySelector = require('./services/findbyselectorService.js');
 const config = require('./config/config');
-const dev_config = require('./config/devConfig');
 const myAuth = require('./services/authService.js');
 const registerRouter = require('./routes/register.js');
+const dev_config = (process.env.store === undefined) ? require('../config/devConfig') : undefined;
 
 const app = express();
 const port = process.env.PORT || config.PORT;
