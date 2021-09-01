@@ -5,7 +5,7 @@ const helmet =require('helmet');
 
 const findBySelector = require('./services/findbyselectorService.js');
 const config = require('./config/config'); 
-const dev_config = require('./config/devConfig');
+const dev_config = (process.env.store === undefined) ? require('../config/devConfig') : undefined;
 const myAuth = require('./services/authService.js');
 const registerRouter = require('./routes/register.js');
 
