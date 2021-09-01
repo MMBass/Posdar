@@ -1,11 +1,13 @@
 const express = require('express')
 const path = require('path');
 const cors = require('cors');
+const helmet =require('helmet');
+
 const findBySelector = require('./services/findbyselectorService.js');
-const config = require('./config/config');
+const config = require('./config/config'); 
+const dev_config = require('./config/devConfig');
 const myAuth = require('./services/authService.js');
 const registerRouter = require('./routes/register.js');
-const dev_config = (process.env.store === undefined) ? require('../config/devConfig') : undefined;
 
 const app = express();
 const port = process.env.PORT || config.PORT;
@@ -18,9 +20,11 @@ startup(); //Start scanning groups on startup
 
 app.use(cors());
 app.use(express.json());
+app.use(helmet());
 
 app.use((req, res, next) => {
-    if(req.method==='DELETE'){req.headers["token"] = process.env.secretToken || dev_config.secretToken} // todo change to LS+JWT token;
+    if(req.method==='DELETE'){req.headers["token"] = process.env.secretToken || dev_config.secretToken}
+     // todo change to LS/httpCookie +JWT/Outh;
     if(req.path==='/'&& req.method==='GET'){return next()}
 
     if(req.header("token")){
@@ -40,5 +44,10 @@ app.use((req, res, next) => {
 
 app.get('/',(req,res)=>{res.sendStatus(200);});
 app.use('/register', registerRouter);
+
+app.use(function (err, req, res, next) {
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
+}) // error handler
 
 app.listen(port,() => console.log(`app listening at port ${port}...`));
