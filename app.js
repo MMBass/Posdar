@@ -1,54 +1,32 @@
 const express = require('express')
-const path = require('path');
 const cors = require('cors');
-const helmet =require('helmet');
+const helmet = require('helmet');
 
 const findBySelector = require('./services/findbyselectorService.js');
-const config = require('./config/config'); 
-const dev_config = (process.env.store === undefined) ? require('../config/devConfig') : undefined;
-const myAuth = require('./services/authService.js');
+const config = require('./config/config');
 const registerRouter = require('./routes/register.js');
+const indexRouter = require('./routes/index.js');
+const authMw = require('./middleware/auth.js');
 
 const app = express();
 const port = process.env.PORT || config.PORT;
 
-async function startup(){
+async function start() {
     await findBySelector.scan();
-    startup();
+    start();
 }
-startup(); //Start scanning groups on startup
+// start(); //Start scanning groups
 
 app.use(cors());
 app.use(express.json());
 app.use(helmet());
 
-app.use((req, res, next) => {
-    if(req.method==='DELETE'){req.headers["token"] = process.env.secretToken || dev_config.secretToken}
-     // todo change to LS/httpCookie +JWT/Outh;
-    if(req.path==='/'&& req.method==='GET'){return next()}
-
-    if(req.header("token")){
-       myAuth.validateToken(req.header("token"), (err, userValid)=>{
-        if(err){
-            res.status(500).send({message:'Server Error'});
-        }else if(!userValid){
-            res.status(401).send({message:'Accsess denied'});
-        }else if(userValid){
-            next();
-        }
-       });  
-    }else{
-        res.sendStatus(403); 
-    }
-});
-
-app.get('/',(req,res)=>{res.sendStatus(200);});
-
-app.use('/register', registerRouter);
+app.use('/',authMw, indexRouter);
+app.use('/register',authMw, registerRouter);
 
 app.use(function (err, req, res, next) {
-    console.error(err.stack)
+    console.error(err.stack);
     res.status(500).send('Something broke!')
 }) // error handler
 
-app.listen(port,() => console.log(`app listening at port ${port}...`));
+app.listen(port, () => console.log(`app listening at port ${port}...`));

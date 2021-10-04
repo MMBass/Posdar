@@ -2,12 +2,12 @@ const { header, body, validationResult} = require('express-validator');
 const tasksModel = require('../models/tasks');
 
 exports.getList = [
+
     // Validate and santitize fields.
     header('userName', "userName required").exists().isEmail().escape(),
 
     // Process request after validation and sanitization.
     async (req, res, next) => {
-
         // Extract the validation errors from a request.
         const errors = validationResult(req);
 
