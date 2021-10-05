@@ -22,8 +22,7 @@ module.exports = (req, res, next) => {
             authService.validateAccess(req.header("x-access-token"), (err, user) => {
                 if (err) {
                     res.status(500).send({ message: 'Server error' });
-                }
-                if (user) {
+                }else if (user) {
                     req.headers['user-name'] = user;
                     next();
                 } else {
