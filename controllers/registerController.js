@@ -3,7 +3,7 @@ const tasksModel = require('../models/tasks');
 
 exports.getList = [
     // Validate and santitize fields.
-    header('userName', "userName required").exists().isEmail().escape(),
+    header('user-name', "userName required").exists().isEmail().escape(),
 
     // Process request after validation and sanitization.
     async (req, res, next) => {
@@ -16,7 +16,7 @@ exports.getList = [
             return;
         }
         else {
-            const all = await tasksModel.readAll();
+            const all = await tasksModel.readAll(req.header("user-name"));
             res.send({ tasks: all });
         }
     }
@@ -31,7 +31,6 @@ exports.newRegister = [
     
     // Process request after validation and sanitization.
     async (req, res, next) => {
-        console.log(req);
         // Extract the validation errors from a request.
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -66,7 +65,7 @@ exports.newRegister = [
 
 exports.delRegister = [
     // Validate and santitize fields.
-    header('t_id', "userName doesn't exists").exists().escape(),
+    header('t-id', "task id doesn't exists").exists().escape(),
 
     // Process request after validation and sanitization.
     async (req, res, next) => {
@@ -79,7 +78,7 @@ exports.delRegister = [
             return;
         }
         else {
-            await tasksModel.removeOne(req.header("t_id"));
+            await tasksModel.removeOne(req.header("t-id"));
             // Data from form is valid. Delete the task.
             res.status(200).send({ message: "Task Deleted" });
         }
@@ -89,9 +88,9 @@ exports.delRegister = [
 function findChars(text) {
     let test = true;
     text.forEach((a) => {
-        if (a.match(/[^A-Za-z0-9]+/) !== null) {
-            test = false;
-        }
+        // if (a.match(/[^A-Za-z0-9]+/) !== null) {
+        //     test = false;
+        // }
     });
     return test;
 }

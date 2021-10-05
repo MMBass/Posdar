@@ -4,9 +4,9 @@ const dev_db_Url = (dev_config) ? dev_config.dev_db_Url : undefined;
 const client = new MongoClient(process.env.dbUrl || dev_db_Url);
 const collection = client.db("Posdar").collection("tasks");
 
-async function readAll() {
+async function readAll(name) {
     await client.connect();
-    let all = await collection.find({}).toArray();
+    let all = await collection.find({"user": name}).toArray();
     client.close();
     return all;
 };

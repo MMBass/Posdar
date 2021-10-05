@@ -17,9 +17,11 @@ async function start() {
 }
 // start(); //Start scanning groups
 
-app.use(cors());
 app.use(express.json());
 app.use(helmet());
+app.use(cors({
+    exposedHeaders: ['access-token']
+}));
 
 app.use('/',authMw, indexRouter);
 app.use('/register',authMw, registerRouter);

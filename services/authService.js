@@ -1,5 +1,6 @@
 const dev_config = (process.env.store === undefined) ? require('../config/devConfig') : undefined;
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const usersModel = require('../models/users');
 
@@ -12,7 +13,9 @@ async function validateKey(reqUser, cb) {
       if (err) {
         cb(err)
       }else if (result === true) {
-        cb(null, true)
+        const at_secret =  process.env.atSecret ||  dev_config.at_secret;
+        const accessToken = jwt.sign({ userName: user.user_name }, at_secret, { expiresIn: 60 * 60 });
+        cb(null, accessToken)
       }else {
         cb(null, false)
       }
@@ -22,11 +25,15 @@ async function validateKey(reqUser, cb) {
   }
 }
 
-function validateAccess(at) {
-  //TODO jwt functions here
-  // turn the hash into userName for list request
-  console.log(at)
-  return true;
+function validateAccess(at,cb) {
+  const at_secret =  process.env.atSecret ||  dev_config.at_secret;
+  const decoded = jwt.verify(at, at_secret, function(err, decoded) {
+    if(err){
+      console.log(err);
+      cb(err);
+    } 
+    cb(null,decoded.userName);
+  });
 }
 
 module.exports = { validateKey, validateAccess };
