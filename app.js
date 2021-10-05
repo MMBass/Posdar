@@ -15,7 +15,7 @@ async function start() {
     await findBySelector.scan();
     start();
 }
-// start(); //Start scanning groups
+start(); //Start scanning groups
 
 app.use(express.json());
 app.use(helmet());
