@@ -87,7 +87,7 @@ exports.delRegister = [
 
 function findChars(text) {
     text.forEach((a) => {
-        if (/[^A-Za-z0-9 אבגדהוזחטיכךלמנסעםןפףצץקרשת]+/.test(a)) {
+        if (/[A-Za-z0-9 אבגדהוזחטיכךלמנסעםןפףצץקרשת]+/.test(a)) {
             return true;
         }
     });
