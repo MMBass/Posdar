@@ -10,5 +10,6 @@ async function readOne(userName = {}) {
     client.close();
     return user;
 };
+readOne("Bass.sites.dev@gmail$$$.com")
 
 module.exports = { readOne };

@@ -5,23 +5,28 @@ const jwt = require('jsonwebtoken');
 const usersModel = require('../models/users');
 
 async function validateKey(reqUser, cb) {
-  try {
-    let user = await usersModel.readOne(reqUser.name);
-    let dbKey = user.api_key;
-
-    bcrypt.compare(reqUser.key/*clinet pass*/, dbKey/*hash*/, function (err, result) {
-      if (err) {
-        cb(err)
-      }else if (result === true) {
-        const at_secret =  process.env.atSecret ||  dev_config.at_secret;
-        const accessToken = jwt.sign({ userName: user.user_name }, at_secret, { expiresIn: 60 * 60 });
-        cb(null, accessToken)
-      }else {
-        cb(null, false)
-      }
-    });
-  } catch (err) {
-    cb(err);
+  if (reqUser.name.includes("$") || reqUser.name.includes("(")||reqUser.name.includes(")")){
+    cb(new Error("unsafe string"));//avoid mongo injection
+  }else{
+    try {
+      let user = await usersModel.readOne(reqUser.name);
+      let dbKey = user.api_key;
+  
+      bcrypt.compare(reqUser.key/*clinet pass*/, dbKey/*hash*/, function (err, result) {
+        if (err) {
+          cb(err)
+        }else if (result === true) {
+          const at_secret =  process.env.atSecret ||  dev_config.at_secret;
+          const accessToken = jwt.sign({ userName: user.user_name }, at_secret, { expiresIn: 60 * 60 });
+          cb(null, accessToken)
+        }else {
+          cb(null, false)
+        }
+      });
+    } catch (err) {
+      console.log(err)
+      cb(err);
+    }
   }
 }
 
