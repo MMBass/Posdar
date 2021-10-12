@@ -32,9 +32,9 @@ app.use('/', authMw, indexRouter);
 app.use('/register', authMw, registerRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    next(createError(404));
-});
+// app.use(function (req, res, next) {
+//     next();// TODO return 404 error
+// });
 
 // error handler
 app.use(function (err, req, res, next) {
