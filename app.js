@@ -17,9 +17,9 @@ async function start() {
 }
 // start(); //Start scanning groups
 
-
-app.use(function ( req, res) {
-    console.error(req.path);
+// todo start(), and del bellow -  
+app.use(function (req, res) {
+    console.log(req.path);
 })
 
 app.use(express.json());
@@ -28,12 +28,18 @@ app.use(cors({
     exposedHeaders: ['access-token']
 }));
 
-app.use('/',authMw, indexRouter);
-app.use('/register',authMw, registerRouter);
+app.use('/', authMw, indexRouter);
+app.use('/register', authMw, registerRouter);
 
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+    next(createError(404));
+});
+
+// error handler
 app.use(function (err, req, res, next) {
     console.error(err.stack);
-    res.status(500).send({ message: 'Server Error' });
-}) // error handler
+    res.status(err.status || 500).send({ message: err.message });
+})
 
 app.listen(port, () => console.log(`app listening at port ${port}...`));
