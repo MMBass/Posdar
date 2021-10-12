@@ -28,7 +28,7 @@ app.use('/register',authMw, registerRouter);
 
 app.use(function (err, req, res, next) {
     console.error(err.stack);
-    res.status(500).send('Something broke!')
+    res.status(500).send('Something broke!');
 }) // error handler
 
 app.listen(port, () => console.log(`app listening at port ${port}...`));
