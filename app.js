@@ -15,7 +15,12 @@ async function start() {
     await findBySelector.scan();
     start();
 }
-start(); //Start scanning groups
+// start(); //Start scanning groups
+
+
+app.use(function ( req, res) {
+    console.error(req.path);
+})
 
 app.use(express.json());
 app.use(helmet());
@@ -28,7 +33,7 @@ app.use('/register',authMw, registerRouter);
 
 app.use(function (err, req, res, next) {
     console.error(err.stack);
-    res.status(500).send('Something broke!');
+    res.status(500).send({ message: 'Server Error' });
 }) // error handler
 
 app.listen(port, () => console.log(`app listening at port ${port}...`));

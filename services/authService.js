@@ -5,16 +5,16 @@ const jwt = require('jsonwebtoken');
 const usersModel = require('../models/users');
 
 async function validateKey(reqUser, cb) {
-  if (reqUser.name.includes("$") || reqUser.name.includes("(")||reqUser.name.includes(")")){
-    cb(new Error("unsafe string"));//avoid mongo injection
-  }else{
     try {
+      if (reqUser.name.includes("$") || reqUser.name.includes("(")||reqUser.name.includes(")")){
+        throw new Error("unsafe string");//avoid mongo injection
+      }
       let user = await usersModel.readOne(reqUser.name);
       let dbKey = user.api_key;
   
       bcrypt.compare(reqUser.key/*clinet pass*/, dbKey/*hash*/, function (err, result) {
         if (err) {
-          cb(err)
+          cb(err);
         }else if (result === true) {
           const at_secret =  process.env.atSecret ||  dev_config.at_secret;
           const accessToken = jwt.sign({ userName: user.user_name }, at_secret, { expiresIn: 60 * 60 });
@@ -23,11 +23,10 @@ async function validateKey(reqUser, cb) {
           cb(null, false)
         }
       });
+      
     } catch (err) {
-      console.log(err)
       cb(err);
     }
-  }
 }
 
 function validateAccess(at,cb) {
