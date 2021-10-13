@@ -18,8 +18,9 @@ async function start() {
 // start(); //Start scanning groups
 
 // todo start(), and del bellow -  
-app.use(function (req, res) {
-    console.log(req.path);
+app.use(function (req, res, next) {
+    console.log(req.method);
+    next();
 })
 
 app.use(express.json());
@@ -32,9 +33,12 @@ app.use('/', authMw, indexRouter);
 app.use('/register', authMw, registerRouter);
 
 // catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-//     next();// TODO return 404 error
-// });
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+  
 
 // error handler
 app.use(function (err, req, res, next) {
