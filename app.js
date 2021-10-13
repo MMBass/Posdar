@@ -12,15 +12,14 @@ const app = express();
 const port = process.env.PORT || config.PORT;
 
 async function start() {
-    await findBySelector.scan();
+    try {
+        await findBySelector.scan();
+    } catch (err){
+        console.log(err);
+    }
     start();
 }
-// start(); //Start scanning groups
-
-// todo start(), and del bellow -  
-app.use(function (req, res, next) {
-    next();
-})
+start(); //Start scanning groups
 
 app.use(express.json());
 app.use(helmet());
@@ -32,7 +31,7 @@ app.use('/', authMw, indexRouter);
 app.use('/register', authMw, registerRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);

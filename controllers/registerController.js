@@ -55,7 +55,7 @@ exports.newRegister = [
                     await tasksModel.createOne(task);
                     res.status(200).send({ message: "Task saved" });
                 } catch (err) {
-                    res.status(500).send({ message: "Error saving" });
+                    return next(err);
                 }
             }
 
@@ -78,9 +78,14 @@ exports.delRegister = [
             return;
         }
         else {
-            await tasksModel.removeOne(req.header("t-id"));
-            // Data from form is valid. Delete the task.
-            res.status(200).send({ message: "Task Deleted" });
+            try{
+                await tasksModel.removeOne(req.header("t-id"));
+                // Data from form is valid. Delete the task.
+                res.status(200).send({ message: "Task Deleted" });
+            }catch (err){
+                return next(err);
+            }
+            
         }
     }
 ];

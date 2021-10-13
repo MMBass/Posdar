@@ -14,6 +14,7 @@ const transporter = nodemailer.createTransport({
 });
 
 exports.sendEmail = async function (details) {
+  try {
     const mailOptions = {
       from: process.env.emailUser || dev_config.emailUser,
       to: process.env.toEmail || dev_config.toEmail,
@@ -21,4 +22,8 @@ exports.sendEmail = async function (details) {
       html: details.template
     };
     await transporter.sendMail(mailOptions);
+  } catch (err) {
+    throw new Error(err);
+  }
+
 }

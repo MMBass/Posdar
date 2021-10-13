@@ -22,7 +22,7 @@ exports.sendEmails = async function (newRelevant,task) {
       task.notifiedPosts.push(postText);
       await tasksModel.putOne(task._id, { notifiedPosts:task.notifiedPosts });
     } catch (e) {
-      console.log(e);
+      throw new Error(e);
     }
   };
  

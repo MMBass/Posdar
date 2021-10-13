@@ -30,17 +30,14 @@ async function validateKey(reqUser, cb) {
 }
 
 function validateAccess(at, cb) {
-  try {
     const at_secret = process.env.atSecret || dev_config.at_secret;
     const decoded = jwt.verify(at, at_secret, function (err, decoded) {
       if (err) {
-        throw new Error(err);
+        cb(err);
+        return;
       }
       cb(null, decoded.userName);
     });
-  } catch (err) {
-    cb(err);
-  }
 }
 
 module.exports = { validateKey, validateAccess };
