@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
     if (req.header("x-api-key")) {
         authService.validateKey({ key: req.header("x-api-key"), name: req.header("user-name") }, (err, accessToken) => {
             if (err) {
-               next(err);
+                next(err);
             } else if (!accessToken) {
                 res.status(401).send({ message: 'Accsess denied' });
             } else if (accessToken) {
@@ -14,14 +14,12 @@ module.exports = (req, res, next) => {
                 next();
             }
         });
-    }
-
-    if (req.method === 'DELETE' || (req.path === '/register' && req.method === 'GET' && req.header("x-access-token"))) {
+    } else if (req.method === 'DELETE' || (req.path === '/register' && req.method === 'GET' && req.header("x-access-token"))) {
         if (req.header("x-access-token")) {
             authService.validateAccess(req.header("x-access-token"), (err, user) => {
                 if (err) {
                     next(err);
-                }else if (user) {
+                } else if (user) {
                     req.headers['user-name'] = user;
                     next();
                 } else {
@@ -30,5 +28,7 @@ module.exports = (req, res, next) => {
             });
 
         }
+    }else{
+        res.status(401).send({ message: 'Accsess denied' });
     }
 }

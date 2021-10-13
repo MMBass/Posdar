@@ -19,7 +19,6 @@ async function start() {
 
 // todo start(), and del bellow -  
 app.use(function (req, res, next) {
-    console.log(req.method);
     next();
 })
 
@@ -38,7 +37,6 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
-  
 
 // error handler
 app.use(function (err, req, res, next) {
