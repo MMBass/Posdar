@@ -20,6 +20,7 @@ exports.scan = async function () {
       for (task of tasks) {
         try {
           let divsText = await getDom(task.group);
+          console.log(divsText)
           if (divsText.length >= 2) {
             await tasksModel.putOne(task._id, { lastCheck: divsText }); //replacing the posts for debugging anyway;
             let newRelevant;
@@ -65,7 +66,7 @@ async function getDom(group_id) {
     await browser.close();
     divsText = [...new Set(divsText)]; //removing duplicates
     return divsText;
-  } catch (e) {
+  } catch (err) {
     await page.close();
     await browser.close();
     throw new Error(err);

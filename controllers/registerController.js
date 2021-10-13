@@ -16,8 +16,8 @@ exports.getList = [
             return;
         }
         else {
-            const all = await tasksModel.readAll(req.header("user-name"));
-            res.send({ tasks: all });
+            const allOfUser = await tasksModel.read(req.header("user-name"));
+            res.send({ tasks: allOfUser });
         }
     }
 ];
