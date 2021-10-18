@@ -20,9 +20,8 @@ exports.scan = async function () {
       for (task of tasks) {
         try {
           let divsText = await getDom(task.group);
-          console.log(divsText)
           if (divsText.length >= 2) {
-            await tasksModel.putOne(task._id, { lastCheck: divsText }); //replacing the posts for debugging anyway;
+            await tasksModel.putOne(task._id, { lastCheck: divsText }); //replacing the posts anyway for debugging;
             let newRelevant;
             if (task.text && Array.isArray(task.text)) newRelevant = getNewRelevent(divsText, task.text, task.notifiedPosts);
             if (newRelevant && newRelevant.length > 0) {
@@ -44,7 +43,7 @@ exports.scan = async function () {
 async function getDom(group_id) {
   try {
     browser = await puppeteer.launch({
-      headless: true,
+      headless: false,
       args: [
         '--proxy-server=socks4://' + generateRandProxy(),
         '--no-sandbox',
