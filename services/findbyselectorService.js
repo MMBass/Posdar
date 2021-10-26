@@ -52,6 +52,7 @@ async function getDom(group_id) {
     });
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3419.0 Safari/537.36');
     page.setViewport({ width: 800, height: 20000 });
     await page.goto(config.fbLink(group_id), { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(generateRandSeconds());
@@ -83,7 +84,7 @@ function generateRandProxy() {
 
 function getNewRelevant(newPosts, taskText, notifiedPosts) {
   let relevant = [];
-  let newRelevant = ["esample", "example 2"];
+  let newRelevant = ["esample", "example 2"];// todo
 
   newPosts.forEach((post) => {
     for (words of taskText) {
