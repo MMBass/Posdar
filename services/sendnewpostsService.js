@@ -10,6 +10,7 @@ exports.sendEmails = async function (newRelevant,task) {
     const rand = (Math.random() + 1).toString(36).substring(2);
     const subject = "Posdar New post in group " + task.group + "  (ID:"+ rand+ ")";
     try {
+      console.log(postText)
       await emailService.sendEmail({
         postText,
         template: `<div style="width:100%; text-align:center; background-color:antiquewhite; margin: 5px;">

@@ -25,6 +25,7 @@ exports.scan = async function () {
             let newRelevant;
             if (task.text && Array.isArray(task.text)) newRelevant = getNewRelevant(divsText, task.text, task.notifiedPosts);
             if (newRelevant && newRelevant.length > 0) {
+              console.log(newRelevant);
               await sendNewPosts.sendEmails(newRelevant, task);
             }
           }
