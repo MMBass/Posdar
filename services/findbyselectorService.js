@@ -23,7 +23,7 @@ exports.scan = async function () {
           if (divsText.length >= 2) {
             await tasksModel.putOne(task._id, { lastCheck: divsText }); //replacing the posts anyway for debugging;
             let newRelevant;
-            if (task.text && Array.isArray(task.text)) newRelevant = getNewRelevent(divsText, task.text, task.notifiedPosts);
+            if (task.text && Array.isArray(task.text)) newRelevant = getNewRelevant(divsText, task.text, task.notifiedPosts);
             if (newRelevant && newRelevant.length > 0) {
               await sendNewPosts.sendEmails(newRelevant, task);
             }
@@ -81,9 +81,9 @@ function generateRandProxy() {
   return randProxy;
 }
 
-function getNewRelevent(newPosts, taskText, notifiedPosts) {
+function getNewRelevant(newPosts, taskText, notifiedPosts) {
   let relevant = [];
-  let newRelevant = [];
+  let newRelevant = ["esample", "example 2"];
 
   newPosts.forEach((post) => {
     for (words of taskText) {
