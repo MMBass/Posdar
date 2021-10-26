@@ -25,14 +25,13 @@ exports.scan = async function () {
             let newRelevant;
             if (task.text && Array.isArray(task.text)) newRelevant = getNewRelevant(divsText, task.text, task.notifiedPosts);
             if (newRelevant && newRelevant.length > 0) {
-              console.log(newRelevant);
               await sendNewPosts.sendEmails(newRelevant, task);
             }
           }
         } catch (err) {
           throw new Error(err);
         }
-      } //for loop separate the calls, forEach calling them together without waiting
+      } //for loop separates the calls, forEach calling them together without waiting
     }
   }
   function timeout(ms) {
@@ -60,7 +59,7 @@ async function getDom(group_id) {
 
     let divsText = await page.evaluate(() => {
       const results = Array.from(document.querySelectorAll(`div.kvgmc6g5.cxmmr5t8.oygrvhab.hcukyx3x.c1et5uql, div[data-ad-preview="message"],  div.linoseic.ggxiycxj.hihg3u9x`));
-
+      console.log(results)
       return results.map((div) => div.innerText);
     });
     console.log(divsText)
