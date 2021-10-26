@@ -59,10 +59,8 @@ async function getDom(group_id) {
 
     let divsText = await page.evaluate(() => {
       const results = Array.from(document.querySelectorAll(`div`));
-      console.log(results)
       return results.map((div) => div.innerText);
     });
-    console.log(divsText)
     await page.close();
     await browser.close();
     divsText = [...new Set(divsText)]; //removing duplicates
@@ -85,7 +83,6 @@ function generateRandProxy() {
 
 function getNewRelevant(newPosts, taskText, notifiedPosts) {
   let relevant = [];
-  let newRelevant = ["esample", "example 2"];// todo
 
   newPosts.forEach((post) => {
     for (words of taskText) {
