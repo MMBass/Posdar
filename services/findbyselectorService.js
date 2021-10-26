@@ -63,6 +63,7 @@ async function getDom(group_id) {
 
       return results.map((div) => div.innerText);
     });
+    console.log(divsText)
     await page.close();
     await browser.close();
     divsText = [...new Set(divsText)]; //removing duplicates
