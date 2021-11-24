@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const tasksModel = require('../models/tasks');
 const sendNewPosts = require('./sendnewpostsService');
 const config = require('../config/config');
-const proxyList = require('../data/openproxySpace');
+const proxyList = require('../data/openproxySpace2');
 
 let browser;
 let page;

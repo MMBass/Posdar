@@ -11,15 +11,17 @@ const authMw = require('./middleware/auth.js');
 const app = express();
 const port = process.env.PORT || config.PORT;
 
+
 async function start() {
-    try {
-        await findBySelector.scan();
-    } catch (err){
-        console.log(err);
+    while (true) {
+        try {
+            await findBySelector.scan();
+        } catch (err){
+            console.log(err);
+        }
     }
-    start();
 }
-start(); //Start scanning groups
+start();//Start scanning groups infinite
 
 app.use(express.json());
 app.use(helmet());
