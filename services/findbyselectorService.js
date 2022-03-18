@@ -25,7 +25,7 @@ exports.scan = async function () {
             await tasksModel.putOne(task._id, { lastCheck: divsText }); //replacing the posts anyway for debugging;
 
             if (task.text && Array.isArray(task.text)) newRelevant = getNewRelevant(divsText, task.text, task.notifiedPosts);
-            if (newRelevant && newRelevant?.length > 0) {
+            if (newRelevant && newRelevant.length > 0) {
               await sendNewPosts.sendEmails(newRelevant, task);
             }
           }
