@@ -6,6 +6,7 @@ const proxyList = require('../data/openproxySpace2');
 
 let browser;
 let page;
+let newRelevant = [];
 
 exports.scan = async function () {
   let tasks;
@@ -22,9 +23,9 @@ exports.scan = async function () {
           let divsText = await getDom(task.group);
           if (divsText.length >= 2) {
             await tasksModel.putOne(task._id, { lastCheck: divsText }); //replacing the posts anyway for debugging;
-            let newRelevant;
+
             if (task.text && Array.isArray(task.text)) newRelevant = getNewRelevant(divsText, task.text, task.notifiedPosts);
-            if (newRelevant && newRelevant.length > 0) {
+            if (newRelevant && newRelevant?.length > 0) {
               await sendNewPosts.sendEmails(newRelevant, task);
             }
           }
@@ -43,7 +44,7 @@ exports.scan = async function () {
 async function getDom(group_id) {
   try {
     browser = await puppeteer.launch({
-      headless: true,
+      headless: false,
       args: [
         '--proxy-server=socks4://' + generateRandProxy(),
         '--no-sandbox',
@@ -92,6 +93,8 @@ function getNewRelevant(newPosts, taskText, notifiedPosts) {
       }
     }
   });
+
+  relevant.push(newPosts[0]); // delete
 
   relevant.forEach(post => {
     post = post.split("…")[0]; // remove string that represents 'more' in other langs

@@ -15,13 +15,14 @@ const port = process.env.PORT || config.PORT;
 async function start() {
     while (true) {
         try {
+            console.log('start');
             await findBySelector.scan();
         } catch (err){
             console.log(err);
         }
     }
 }
-// start();//Start scanning groups infinite
+start();//Start scanning groups infinite
 
 app.use(express.json());
 app.use(helmet());
