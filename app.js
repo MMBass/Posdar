@@ -22,7 +22,7 @@ async function start() {
         }
     }
 }
-start();//Start scanning groups infinite
+// start();//Start scanning groups infinite
 
 app.use(express.json());
 app.use(helmet());

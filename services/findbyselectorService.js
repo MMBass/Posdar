@@ -94,8 +94,6 @@ function getNewRelevant(newPosts, taskText, notifiedPosts) {
     }
   });
 
-  relevant.push(newPosts[0]); // delete
-
   relevant.forEach(post => {
     post = post.split("…")[0]; // remove string that represents 'more' in other langs
     post = post.split("...")[0]; // remove string that represents 'more' in other langs
