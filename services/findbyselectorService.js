@@ -44,7 +44,7 @@ exports.scan = async function () {
 async function getDom(group_id) {
   try {
     browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       args: [
         '--proxy-server=socks4://' + generateRandProxy(),
         '--no-sandbox',
@@ -64,7 +64,7 @@ async function getDom(group_id) {
     });
     await page.close();
     await browser.close();
-    divsText = [...new Set(divsText)]; //removing duplicates
+    divsText = [...new Set(divsText)]; //remove duplicates
     return divsText;
   } catch (err) {
     await page.close();
