@@ -15,7 +15,7 @@ exports.sendEmails = async function (newRelevant,task) {
         template: `<div style="width:100%; text-align:center; background-color:#ba68c8; color: white; margin: 5px;">
                       <h3 style="background-color: lightgray; padding: 8px;">${subject}</h3>
                       <strong>${postText}</strong>
-                      <p style="background-color: white; padding: 8px;">${link}</p>
+                      <p style="background-color: lightgray; padding: 8px;">${link}</p>
                    </div>`,
         email,
       });
