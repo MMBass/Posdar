@@ -44,9 +44,9 @@ exports.scan = async function () {
 async function getDom(group_id) {
   try {
     browser = await puppeteer.launch({
-      headless: true,
+      headless: false,
       args: [
-        '--proxy-server=socks4://' + generateRandProxy(),
+        // '--proxy-server=socks4://' + generateRandProxy(),
         '--no-sandbox',
         '--disable-setuid-sandbox',
       ]
@@ -59,7 +59,7 @@ async function getDom(group_id) {
     await page.waitForTimeout(generateRandSeconds());
 
     let divsText = await page.evaluate(() => {
-      const results = Array.from(document.querySelectorAll(`div`));
+      const results = Array.from(document.querySelectorAll(`div.kvgmc6g5.cxmmr5t8.oygrvhab.hcukyx3x.c1et5uql, div[data-ad-preview="message"],  div.linoseic.ggxiycxj.hihg3u9x`));
       return results.map((div) => div.innerText);
     });
     await page.close();
