@@ -28,6 +28,7 @@ app.use(helmet());
 app.use(cors({
     exposedHeaders: ['access-token']
 }));
+app.use(cors());
 
 app.use('/', authMw, indexRouter);
 app.use('/register', authMw, registerRouter);
