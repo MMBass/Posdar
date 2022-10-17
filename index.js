@@ -30,6 +30,7 @@ app.use(cors({
 }));
 app.use(cors());
 
+app.use('/', start());
 app.use('/', authMw, indexRouter);
 app.use('/register', authMw, registerRouter);
 
