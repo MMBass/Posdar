@@ -21,6 +21,7 @@ exports.scan = async function () {
       for (task of tasks) {
         try {
           let divsText = await getDom(task.group);
+          console.log(divsText);
           if (divsText.length >= 2) {
             await tasksModel.putOne(task._id, { lastCheck: divsText }); //replacing the posts anyway for debugging;
 
