@@ -12,7 +12,6 @@ const app = express();
 const port = process.env.PORT || config.PORT;
 
 async function start() {
-    console.log('start');
     while (true) {
         try {
             await findBySelector.scan();

@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const tasksModel = require('../models/tasks');
 const sendNewPosts = require('./sendnewpostsService');
 const config = require('../config/config');
-const proxyList = require('../data/openproxySpace2');
+const proxyList = require('../data/openproxySpace3');
 
 let browser;
 let page;
@@ -47,7 +47,7 @@ async function getDom(group_id) {
     browser = await puppeteer.launch({
       headless: true,
       args: [
-        // '--proxy-server=socks4://' + generateRandProxy(),
+        '--proxy-server=socks4://' + generateRandProxy(),
         '--no-sandbox',
         '--disable-setuid-sandbox',
       ]
