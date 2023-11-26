@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const tasksModel = require('../models/tasks');
 const sendNewPosts = require('./sendnewpostsService');
 const config = require('../config/config');
-const proxyList = require('../data/openproxySpace3');
+const proxyList = require('../data/openproxySpace4');
 
 let browser;
 let page;
@@ -18,18 +18,22 @@ exports.scan = async function () {
 
   if (typeof tasks !== "undefined") {
     if (tasks.length > 0) {
-      for (task of tasks) {
+      for (let task of tasks) {
         try {
           let divsText = await getDom(task.group);
-          console.log(divsText);
+          // console.log(divsText);
           if (divsText.length >= 2) {
             await tasksModel.putOne(task._id, { lastCheck: divsText }); //replacing the posts anyway for debugging;
 
             if (task.text && Array.isArray(task.text)) newRelevant = getNewRelevant(divsText, task.text, task.notifiedPosts);
             if (newRelevant && newRelevant.length > 0) {
-              await sendNewPosts.sendEmails(newRelevant, task);
+              console.log("New posts For search: " + task.text.join(" | ") + " : " + newRelevant.join(" ########### "));
+              // todo notify in other way.
+              // await sendNewPosts.sendEmails(newRelevant, task);
             }
-          }
+          } else if (divsText.length === 0) {
+            await sendNewPosts.sendEmails(['Error: 0 results for task. Selector problem or group not exsist'], task);
+          };
         } catch (err) {
           throw new Error(err);
         }
@@ -45,9 +49,9 @@ exports.scan = async function () {
 async function getDom(group_id) {
   try {
     browser = await puppeteer.launch({
-      headless: true,
+      headless: false,
       args: [
-        '--proxy-server=socks4://' + generateRandProxy(),
+        // '--proxy-server=socks4://' + generateRandProxy(),
         '--no-sandbox',
         '--disable-setuid-sandbox',
       ]
@@ -55,12 +59,13 @@ async function getDom(group_id) {
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3419.0 Safari/537.36');
-    page.setViewport({ width: 800, height: 20000 });
-    await page.goto(config.fbLink(group_id), { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(generateRandSeconds());
+    page.setViewport({ width: 800, height: 1000, deviceScaleFactor: 1 });
+    await page.goto(config.oldfbLink(group_id), { waitUntil: 'load' });
+    await new Promise(r => setTimeout(r, generateRandSeconds()));
 
     let divsText = await page.evaluate(() => {
-      const results = Array.from(document.querySelectorAll(`div.kvgmc6g5.cxmmr5t8.oygrvhab.hcukyx3x.c1et5uql, div[data-ad-preview="message"],  div.linoseic.ggxiycxj.hihg3u9x`));
+      const results = Array.from(document.querySelectorAll(`._5msi`)); // old fb - not blocked with login prompt
+      // document.querySelectorAll(`div.kvgmc6g5.cxmmr5t8.oygrvhab.hcukyx3x.c1et5uql, div[data-ad-preview="message"],  div.linoseic.ggxiycxj.hihg3u9x`) // new Fb last working classes - blocked by login prompt
       return results.map((div) => div.innerText);
     });
     await page.close();
@@ -87,8 +92,8 @@ function getNewRelevant(newPosts, taskText, notifiedPosts) {
   let relevant = [];
 
   newPosts.forEach((post) => {
-    for (words of taskText) {
-      if (post.toLocaleLowerCase().includes(words.toLocaleLowerCase())) {
+    for (let words of taskText) {
+      if (post.toLowerCase().includes(words)) {
         relevant.push(post);
         break; // one match is enough
       }

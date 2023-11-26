@@ -18,7 +18,7 @@ exports.sendEmail = async function (details) {
     const mailOptions = {
       from: process.env.emailUser || dev_config.emailUser,
       to: process.env.toEmail || dev_config.toEmail,
-      subject: details.postText,
+      subject: details.subject,
       html: details.template
     };
     await transporter.sendMail(mailOptions);

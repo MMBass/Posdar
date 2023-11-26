@@ -10,9 +10,9 @@ async function validateKey(reqUser, cb) {
       throw new Error("unsafe string");//avoid mongo injection
     }
     let user = await usersModel.readOne(reqUser.name);
-    let dbKey = user.api_key;
+    let dbHash = user.api_key;
 
-    bcrypt.compare(reqUser.key/*clinet pass*/, dbKey/*hash*/, function (err, result) {
+    bcrypt.compare(reqUser.key, dbHash, function (err, result) {
       if (err) {
         cb(err);
       } else if (result === true) {

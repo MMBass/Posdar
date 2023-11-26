@@ -11,6 +11,5 @@ const config = {
 module.exports = config;
 
 //selectors:
-// linoseic ggxiycxj hihg3u9x - for colored stickers
-// rq0escxv a8c37x1j rz4wbd8a a8nywdso - for marketplace messages;
+// old fb - option - _5msi
 
