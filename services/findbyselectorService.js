@@ -25,7 +25,7 @@ exports.scan = async function () {
           if (divsText.length >= 2) {
             await tasksModel.putOne(task._id, { lastCheck: divsText }); //replacing the posts anyway for debugging;
 
-            if (task.text && Array.isArray(task.text)) newRelevant = getNewRelevant(divsText, task.text, task.notifiedPosts);
+            if (task.text && Array.isArray(task.text)) newRelevant = checkNewRelevant(divsText, task.text, task.notifiedPosts);
             if (newRelevant && newRelevant.length > 0) {
               console.log("New posts For search: " + task.text.join(" | ") + " : " + newRelevant.join(" ########### "));
               // todo notify in other way.
@@ -89,7 +89,7 @@ function generateRandProxy() {
   return randProxy;
 }
 
-function getNewRelevant(newPosts, taskText, notifiedPosts) {
+function checkNewRelevant(newPosts, taskText, notifiedPosts) {
   let relevant = [];
 
   newPosts.forEach((post) => {

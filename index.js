@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors');
 const helmet = require('helmet');
+const cron = require('node-cron');
 
 const findBySelector = require('./services/findbyselectorService.js');
 const config = require('./config/config');
@@ -11,17 +12,23 @@ const authMw = require('./middleware/auth.js');
 const app = express();
 const port = process.env.PORT || config.PORT;
 
+let running = false;
 async function start() {
-    console.log('start');
-    while (true) {
-        try {
-            await findBySelector.scan();
-        } catch (err) {
-            console.log(err);
-        }
+    if (running) {
+        console.log('The previous execution is still running, skipping this one');
+        return;
+    }
+    try {
+        running = true;
+        await findBySelector.scan();
+        console.log('end');
+        running = false
+    } catch (err) {
+        console.log(err);
     }
 }
-start();//Start scanning groups infinite
+var cronJob = cron.schedule('* */5 * * * *', start); //Create a cron job
+
 
 app.use(express.json());
 app.use(helmet());
