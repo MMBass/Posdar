@@ -32,7 +32,8 @@ exports.scan = async function () {
               // await sendNewPosts.sendEmails(newRelevant, task);
             }
           } else if (divsText.length === 0) {
-            await sendNewPosts.sendEmails(['Error: 0 results for task. Selector problem or group not exsist'], task);
+            console.log('Error: 0 results for task. Selector problem or group not exsist');
+            // await sendNewPosts.sendEmails(['Error: 0 results for task. Selector problem or group not exsist'], task);
           };
         } catch (err) {
           throw new Error(err);
