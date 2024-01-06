@@ -8,4 +8,4 @@
 #### Example of sending task to search in secretTelAviv group - new posts about free items:
 ![Screenshot1](https://github.com/MMBass/Posdar/blob/master/data/Screenshot_20240106_212849_Chrome.jpg)
 
-## Developed with react and expressJs
+## Developed using react and expressJs
