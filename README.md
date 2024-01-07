@@ -6,6 +6,6 @@
 
 
 #### Example of sending task to search in secretTelAviv group - new posts about free items:
-<img src="https://github.com/MMBass/Posdar/blob/master/data/Screenshot_20240106_212849_Chrome.jpg" alt="Screenshot1" height="200"/>
+<img src="https://github.com/MMBass/Posdar/blob/master/data/Screenshot_20240106_212849_Chrome.jpg" alt="Screenshot1" style="width: 50%;max-width: 330px;" />
 
 ## Developed using react and expressJs
